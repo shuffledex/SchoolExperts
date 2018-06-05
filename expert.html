@@ -75,8 +75,9 @@
 							<div class="display-tc">
 								<div class="row">
 									<div class="col-md-8">
-										<h1 class="no-margin">Name</h1>
-										<p>Description</p>
+										<h1 class="no-margin name">Loading...</h1>
+										<p class="description"></p>
+										<p class="cost"></p>
 										<p><a href="find.html" class="btn btn-white">Schedule a call</a></p>
 									</div>
 								</div>
@@ -130,6 +131,12 @@
 	<!-- Main -->
 	<script src="js/nebPay.js"></script>
 	<script src="js/main.js"></script>
+	<script type="text/javascript">
+		var url_string = window.location.href;
+		var url = new URL(url_string);
+		var address = url.searchParams.get("address");
+		getExpert(address);
+	</script>
 
 	</body>
 </html>

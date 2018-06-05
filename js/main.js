@@ -36,10 +36,9 @@
 				$('.owl-carousel-carousel').append('\
 					<div class="item">\
 						<div class="gtco-item">\
-							<a href=""><img src="images/img_1.jpg" alt="" class="img-responsive"></a>\
-							<h2><a href="#">'+element.name+'</h2></a>\
+							<a href="expert.html?address='+element.address+'"><img src="images/img_1.jpg" alt="" class="img-responsive"></a>\
+							<h2><a href="expert.html?address='+element.address+'">'+element.name+'</h2></a>\
 							<p class="role">'+element.description+'</p>\
-							<p class="cost">'+toNas(element.cost)+' NAS</p>\
 						</div>\
 					</div>\
 				');
@@ -48,6 +47,37 @@
 		} else {
 			setTimeout(function() {
 				getExperts()
+			}, 5000);
+		}
+	};
+
+	var getExpertAddress;
+	function getExpert(address) {
+		getExpertAddress = address
+		var to = dappAddress;
+		var value = 0;
+		var callFunction = "getExpert";
+		var callArgs = [];
+		callArgs.push(address)
+		callArgs = JSON.stringify(callArgs);
+
+		nebPay.simulateCall(to, value, callFunction, callArgs, {
+			qrcode: {
+			    showQRCode: false
+			},
+			listener: getExpertListener
+		});
+	};
+
+	function getExpertListener(response) {
+		if (response.execute_err == "" || response.execute_err == "insufficient balance") {
+			var result = JSON.parse(response.result);
+			$('.name').html(result.name);
+			$('.description').html(result.description);
+			$('.cost').html(toNas(result.cost) + " NAS for 30 minutes");
+		} else {
+			setTimeout(function() {
+				getExpert(getExpertAddress)
 			}, 5000);
 		}
 	};
